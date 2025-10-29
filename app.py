@@ -141,7 +141,7 @@ def webhook():
     
     return "OK", 200
 
-print(f"Webhook set at: {URL}")
+ 
 
 # Set webhook Automatically
 @app.before_first_request
@@ -156,3 +156,4 @@ if __name__ == "__main__":
             
 
         
+
