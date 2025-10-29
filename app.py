@@ -22,7 +22,7 @@ bot = telepot.Bot(token=TOKEN)
 # --------------------- AI RESPONSE ---------------------
 def ai_response(prompt: str):
     headers = {"Authorization": f"Bearer {HUGGINGFACE_API_KEY}"}
-    model = "HuggingFaceH4/zephyr-7b-beta"
+    model = "gpt2"
 
 
     data = {
@@ -109,4 +109,5 @@ with app.app_context():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
+
 
