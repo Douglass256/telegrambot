@@ -32,7 +32,7 @@ def ai_response(prompt: str):
 
     try:
         response = requests.post(
-            f"https://api-inference.huggingface.co/models/{model}",
+            f"https://router.huggingface.co/hf-inference/models/{model}",
             headers=headers,
             json=data,
             timeout=40
@@ -109,5 +109,6 @@ with app.app_context():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
+
 
 
