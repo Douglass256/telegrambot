@@ -144,7 +144,7 @@ def webhook():
  
 
 # Set webhook Automatically
-@app.before_first_request
+@app.before_request
 def set_webhook():
     render_url = os.getenv("RENDER_EXTERNAL_URL")
     webhook_url = f"{render_url}/{SECRET}"
@@ -156,4 +156,5 @@ if __name__ == "__main__":
             
 
         
+
 
