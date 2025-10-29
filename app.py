@@ -11,19 +11,18 @@ from flask import Flask, render_template, session, url_for, redirect, request
 from telepot.namedtuple import *
 
 load_dotenv()
-USERNAME = os.getenv ("PYTHONANYWHERE_USERNAME")
 TOKEN = os.getenv('TELEGRAM_BOT_API')
 HUGGINGFACE_API_KEY = os.getenv('HUGGINGFACE_API_KEY')
 
-if not all([USERNAME, TOKEN, HUGGINGFACE_API_KEY]):
+if not all([TOKEN, HUGGINGFACE_API_KEY]):
     raise ValueError("Missing one or more enviroment variables!")
 
 SECRET = ''.join(random.choice(string.ascii_letters) for i in range(20))
-URL = f"https://{USERNAME}.pythonanywhere.com/{SECRET}"
+
 
 #telepot.api.set_proxy('http://proxy.server:3128')
 bot = telepot.Bot(token=TOKEN)
-bot.setWebhook(URL, max_connections=10)
+
 
 # HuggingFace text generation function
 def ai_response(prompt: str):
@@ -135,7 +134,7 @@ def webhook():
             bot.sendMessage(chat_id, "Pain is temporary, if it is the obstacle to the way. Then it becomes the way. But if it is not, then just let it pass!")
         else:
             
-            # Use ai response
+            # Use AI response
             reply = ai_response(text)
             bot.sendMessage(chat_id, reply)
         return "OK", 200
@@ -144,7 +143,16 @@ def webhook():
 
 print(f"Webhook set at: {URL}")
 
+# Set webhook Automatically
+@app.before_first_request
+def set_webhook():
+    render_url = os.getenv("RENDER_EXTERNAL_URL")
+    webhook_url = f"{render_url}/{SECRET}"
+    bot.setWebhook(webhook_url)
+    
+
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
             
+
         
